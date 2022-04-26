@@ -1,0 +1,33 @@
+#Topological sorting in a DAG
+from collections import defaultdict
+class Graph:
+    def __init__(self,vertices):
+        self.graph = defaultdict(list)
+        self.V = vertices 
+    def AddEdge(self,u,v):
+        self.graph[u].append(v)
+    def TopologicalSortUtil(self,v,Visited,Stack):
+        Visited[v] = True
+        for i in self.graph[v]:
+            if Visited[i] == False:
+                self.TopologicalSortUtil(i,Visited,Stack)
+        Stack.insert(0,v)
+    def TopologicalSort(self):
+        Visited = [False]*self.V
+        Stack =[]
+        for i in range(self.V):
+            if Visited[i] == False:
+                self.TopologicalSortUtil(i,Visited,Stack)
+        print (Stack) 
+g= Graph(6)
+g.AddEdge(5, 2);
+g.AddEdge(5, 0);
+g.AddEdge(4, 0);
+g.AddEdge(4, 1);
+g.AddEdge(2, 3);
+g.AddEdge(3, 1);
+print ("Following is a Topological Sort of the given graph:")
+g.TopologicalSort()
+#Output-
+#Following is a Topological Sort of the given graph
+#[5, 4, 2, 3, 1, 0]

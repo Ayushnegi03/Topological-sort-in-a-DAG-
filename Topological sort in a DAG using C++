@@ -1,0 +1,75 @@
+//Topological sorting for Directed Acyclic Graph (DAG) is a linear ordering of vertices
+//such that for every directed edge uv, vertex u comes before v in the ordering. 
+//Topological Sorting for a graph is not possible if the graph is not a DAG.
+#include<iostream> 
+#include<stack>
+#include<list>  
+using namespace std; 
+class graph
+{ 
+    int no_of_Vertices;
+    list<int>* l1;  
+  public:
+    graph(int n) 
+  { 
+      no_of_Vertices=n; 
+      l1=new list<int>[n]; 
+  } 
+    void add_edge(int x, int y)
+  {
+     l1[x].push_back(y);
+  } 
+  void Topological(int, int [], stack<int>& );
+    void topological_sort(); 
+}; 
+void graph::Topological(int vertex_no, int visited[], stack<int>& s) 
+{ 
+    visited[vertex_no]=1; 
+    list<int>::iterator i; 
+    for (i = l1[vertex_no].begin(); i != l1[vertex_no].end(); i++)
+  { 
+        if (visited[*i]==0)
+    { 
+            Topological(*i,visited,s);
+    }
+  }
+    s.push(vertex_no); 
+} 
+void graph::topological_sort() 
+{ 
+    stack<int> s; 
+    int i,visited[no_of_Vertices];
+    for (i=0; i<no_of_Vertices;i++)
+  {
+    visited[i]=0; 
+  } 
+    for (i=0; i<no_of_Vertices;i++)
+  {
+    if (visited[i]==0)
+    {
+      Topological(i,visited,s); 
+    } 
+  } 
+    while(!s.empty()) 
+  {
+    int k=s.top(); 
+        cout<<k<<" "; 
+        s.pop(); 
+    } 
+} 
+int main() 
+{ 
+    graph p(6);  
+    p.add_edge(4, 2); 
+    p.add_edge(5, 1); 
+    p.add_edge(4, 0); 
+    p.add_edge(3, 1); 
+    p.add_edge(1, 3);
+    p.add_edge(3, 2);
+    cout <<"\nThe topological order of the vertices are:\n "; 
+    p.topological_sort(); 
+    return 0; 
+}
+//Output-
+//The topological order of the vertices are:
+//5 4 1 3 2 0
